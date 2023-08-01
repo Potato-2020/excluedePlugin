@@ -1,0 +1,114 @@
+//插件多的时候，可以这样写（gradle2.1以上）
+plugins {
+    id 'java-library'
+    id 'groovy'
+    id 'maven-publish'
+    id 'signing'
+}
+
+dependencies {
+    repositories {
+        google()
+        jcenter()
+    }
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // 包含了AMS字节码注入工具
+    implementation 'com.android.tools.build:gradle:4.1.2'
+    implementation gradleApi()//gradle sdk
+    implementation localGroovy()//groovy sdk
+//    api files('libs/mix.jar')
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
+//编码格式
+tasks.withType(JavaCompile) {
+    options.encoding 'UTF-8'
+}
+
+group = 'com.biligle.exclude'
+version = '1.0.0'
+
+java {
+    //gradle6.3新方法
+    withJavadocJar()//文档jar
+    withSourcesJar()//源代码jar
+    java {
+        //gradle6.3新方法
+        withJavadocJar()//文档jar
+        withSourcesJar()//源代码jar
+    }
+
+    publishing {
+        publications {
+            excludePlugin(MavenPublication) {
+                artifactId = 'excludePlugin'
+                from components.java
+                versionMapping {
+                    usage('java-api') {
+                        fromResolutionOf('runtimeClasspath')
+                    }
+                    usage('java-runtime') {
+                        fromResolutionResult()
+                    }
+                }
+                // 配置 pop 文件格式
+                pom {
+                    packaging 'aar'
+                    name = 'excludePlugin'
+                    description = 'A simple exclude'
+                    url = 'http://www.github.com'
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'Potato'
+                            name = 'PotatoW'
+                            email = 'pw87512@gmail.com'
+                        }
+                    }
+                    scm {
+                        connection = 'https://github.com/Potato-2020/excludePlugin'
+                        developerConnection = 'https://github.com/Potato-2020/excludePlugin.git'
+                        url = 'https://github.com/Potato-2020/excludePlugin'
+                    }
+                }
+            }
+        }
+
+// 配置远程仓库
+        repositories {
+            // maven 对应的用户名和密码自定义存在 local.properties 文件中
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('gradle.properties').newDataInputStream())
+            def mavenUser = properties.getProperty("maven.user")
+            def mavenPassword = properties.getProperty("maven.password")
+            maven {
+//                def releasesRepoUrl = layout.buildDirectory.dir('https://s01.oss.sonatype.org/content/repositories/releases')
+//                def snapshotsRepoUrl = layout.buildDirectory.dir('https://s01.oss.sonatype.org/content/repositories/snapshots')
+//                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                url = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                credentials {
+                    username mavenUser
+                    password mavenPassword
+                }
+            }
+        }
+    }
+
+// 对 excludePlugin 发布内容进行签名
+    signing {
+        sign publishing.publications.excludePlugin
+    }
+
+    javadoc {
+        if (JavaVersion.current().isJava9Compatible()) {
+            options.addBooleanOption('html5', true)
+        }
+    }
+}
+
