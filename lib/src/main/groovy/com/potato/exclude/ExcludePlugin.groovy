@@ -13,7 +13,7 @@ class ExcludePlugin implements Plugin<Project> {
         //仅支持app工程
         if (project.plugins.hasPlugin("com.android.application")) {
             //创建混淆扩展块
-            project.extensions.create("exclude", ExcludeExtension)
+            project.extensions.create("excludeEx", ExcludeExtension)
             //对AppExtension注册一个任务
             project.extensions.getByType(AppExtension).registerTransform(new ExcludeTransform(project))
         }

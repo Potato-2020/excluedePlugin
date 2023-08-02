@@ -1,8 +1,8 @@
 package com.potato.exclude.transform
 
 import com.android.build.api.transform.*
+import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.utils.FileUtils
-import com.google.common.collect.ImmutableSet
 import com.potato.exclude.extentions.ExcludeExtension
 import org.gradle.api.Project
 
@@ -14,10 +14,10 @@ class ExcludeTransform extends Transform {
 
     ExcludeTransform(Project project) {
         this.project = project
-        ExcludeExtension mixExtension = project.mix
+        ExcludeExtension excludeExtension = project.excludeEx
         project.afterEvaluate {
-            openLog = mixExtension.openLog
-            exclude = mixExtension.exclude
+            openLog = excludeExtension.openLog
+            exclude = excludeExtension.exclude
             if (openLog) {
                 log("准备删除资源文件目录，exclude: $exclude")
             }
@@ -51,7 +51,8 @@ class ExcludeTransform extends Transform {
      */
     @Override
     public Set<? super QualifiedContent.Scope> getScopes() {
-        return ImmutableSet.of(QualifiedContent.Scope.PROJECT)
+//        return ImmutableSet.of(QualifiedContent.Scope.PROJECT)
+        return TransformManager.SCOPE_FULL_PROJECT
     }
 
     /**

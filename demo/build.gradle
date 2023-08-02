@@ -1,12 +1,12 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-//apply plugin: 'excludePlugin'
+apply plugin: 'excludePlugin'
 
-//exclude {
-//    openLog true//开启日志打印
-//    exclude "app/assets/flysafe/dji.nfzdb2.confumix","app/assets/flysafe/dji.nfzdb2.sig","app/assets/flysafe/flysafe_areas_djigo.db.confumix"
-//}
+excludeEx {
+    openLog true//开启日志打印
+    exclude "app/assets/flysafe/dji.nfzdb2.confumix","app/assets/flysafe/dji.nfzdb2.sig","app/assets/flysafe/flysafe_areas_djigo.db.confumix"
+}
 
 android {
     compileSdkVersion 30
