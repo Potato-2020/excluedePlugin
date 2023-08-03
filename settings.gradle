@@ -1,3 +1,2 @@
 rootProject.name='excludePlugin'
 include ':demo'
-include ':lib'
