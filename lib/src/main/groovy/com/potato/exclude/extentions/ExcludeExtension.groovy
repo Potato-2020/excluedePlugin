@@ -3,6 +3,7 @@ package com.potato.exclude.extentions
 class ExcludeExtension {
 
     def openLog//是否开启日志打印
+    def aarName//aar包名称dji-sdk-v5-aircraft-5.5.0
     ArrayList exclude//排除
 
     ExcludeExtension() {
@@ -11,6 +12,10 @@ class ExcludeExtension {
 
     def openLog(boolean openLog) {
         this.openLog = openLog
+    }
+
+    def aarName(String aarName) {
+        this.aarName = aarName
     }
 
     def excludeSingle(String dir) {

@@ -1,12 +1,13 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'excludePlugin'
-
-excludeEx {
-    openLog true//开启日志打印
-    exclude "app/assets/flysafe/dji.nfzdb2.confumix","app/assets/flysafe/dji.nfzdb2.sig","app/assets/flysafe/flysafe_areas_djigo.db.confumix"
-}
+//apply plugin: 'excludePlugin'
+//
+//excludeEx {
+//    openLog true//开启日志打印
+//    aarName 'dji-sdk-v5-aircraft-5.5.0.aar'//排除aar中的资源
+//    exclude "app/assets/flysafe/dji.nfzdb2.confumix","app/assets/flysafe/dji.nfzdb2.sig","app/assets/flysafe/flysafe_areas_djigo.db.confumix"//资源目录文件
+//}
 
 android {
     compileSdkVersion 30
@@ -19,7 +20,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -36,12 +36,15 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.3.0'
@@ -49,5 +52,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation "com.dji:dji-sdk-v5-aircraft:5.5.0"
+    implementation files('libs/dji-sdk-v5-aircraft-5.5.0.aar')
 }
