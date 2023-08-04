@@ -1,13 +1,6 @@
 
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-//apply plugin: 'excludePlugin'
-//
-//excludeEx {
-//    openLog true//开启日志打印
-//    aarName 'dji-sdk-v5-aircraft-5.5.0.aar'//排除aar中的资源
-//    exclude "app/assets/flysafe/dji.nfzdb2.confumix","app/assets/flysafe/dji.nfzdb2.sig","app/assets/flysafe/flysafe_areas_djigo.db.confumix"//资源目录文件
-//}
 
 android {
     compileSdkVersion 30
